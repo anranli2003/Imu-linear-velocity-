@@ -277,6 +277,7 @@ class SensorIMU:
         quaternion = self.bno055.get_quaternion_orientation()
         linear_acceleration = self.bno055.get_linear_acceleration()
         gyroscope = self.bno055.get_gyroscope()
+        gravity = self.bno055.get_gravity()
         
         imu_data.header.stamp = rospy.Time.now()
         imu_data.header.frame_id = self.frame_id
@@ -287,17 +288,17 @@ class SensorIMU:
         imu_data.orientation.y = quaternion[2]
         imu_data.orientation.z = quaternion[3]
 
-        imu_data.linear_acceleration.x = linear_acceleration[0]
-        imu_data.linear_acceleration.y = linear_acceleration[1]
-        imu_data.linear_acceleration.z = linear_acceleration[2]
+        imu_data.linear_acceleration.x = linear_acceleration[0] + gravity[0]
+        imu_data.linear_acceleration.y = linear_acceleration[1] + gravity[1]
+        imu_data.linear_acceleration.z = linear_acceleration[2] + gravity[2]
 
         imu_data.angular_velocity.x = gyroscope[0]
         imu_data.angular_velocity.y = gyroscope[1]
         imu_data.angular_velocity.z = gyroscope[2]
 
-        imu_data.orientation_covariance[0] = -1
-        imu_data.linear_acceleration_covariance[0] = -1
-        imu_data.angular_velocity_covariance[0] = -1
+        imu_data.orientation_covariance[0] = 0
+        imu_data.linear_acceleration_covariance[0] = 0
+        imu_data.angular_velocity_covariance[0] = 0
 
         self.imu_data_seq_counter=+1
 
