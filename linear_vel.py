@@ -11,7 +11,7 @@ velocity_z = 0
 
 
 def data_callback(data: Imu):
-    delta_t = 1/20
+    delta_t = 1/100
     global velocity_x
     global velocity_y
     global velocity_z
